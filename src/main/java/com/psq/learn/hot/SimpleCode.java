@@ -12,7 +12,7 @@ import java.util.LinkedList;
 public class SimpleCode {
 
     public static void main(String[] args) {
-        System.out.println("Hello leetcode!");
+        System.out.println("Hello hot-SimpleCode!");
     }
 
     /**
@@ -81,141 +81,6 @@ public class SimpleCode {
     }
 
     /**
-     * 两数相加
-     * 题目：
-     * 给你两个非空的链表，表示两个非负的整数。它们每位数字都是按照逆序的方式存储的，并且每个节点只能存储一位数字。
-     * 请你将两个数相加，并以相同形式返回一个表示和的链表。
-     * 你可以假设除了数字 0 之外，这两个数都不会以0开头
-     */
-    class day2 {
-        public class ListNode {
-            int val;
-            ListNode next;
-
-            ListNode() {
-            }
-
-            ListNode(int val) {
-                this.val = val;
-            }
-
-            ListNode(int val, ListNode next) {
-                this.val = val;
-                this.next = next;
-            }
-        }
-
-        /**
-         * TODO：方法一题解：模拟
-         * 解题思路：
-         * 由于输入的两个链表都是逆序存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。
-         * 我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。具体而言，如果当前两个链表处相应位置的数字为 n1,n2，进位值为 carry，则它们的和为 sum = n1+n2+carry
-         * 其中，答案链表处相应位置的数字为sum%10(取模),而新的进位值为sum/10(取整)
-         * 如果两个链表的长度不同，则可以认为长度短的链表的后面有若干个0 。
-         * 此外，如果链表遍历结束后，有进位carry>0，还需要在答案链表的后面附加一个节点，节点的值为 carry
-         *
-         * 复杂度分析：
-         * 时间复杂度：(max(m,n))，其中 mm 和 nn 分别为两个链表的长度。我们要遍历两个链表的全部位置，而处理每个位置只需要 O(1) 的时间。
-         * 空间复杂度：O(1)。注意返回值不计入空间复杂度。
-         */
-        public ListNode addTwoNumbers1(ListNode l1, ListNode l2) {
-            ListNode head = null, tail = null;
-            //进位
-            int carry = 0;
-            while (l1 != null || l2 != null){
-                int a = l1 != null ? l1.val : 0;
-                int b = l2 != null ? l2.val : 0;
-                int sum = a + b + carry;
-                if (head == null){
-                    head = tail =  new ListNode(sum%10);
-                }else {
-                    tail.next =  new ListNode(sum%10);
-                    tail = tail.next;
-                }
-                carry = sum/10;
-                if (l1 != null){
-                    l1 = l1.next;
-                }
-                if (l2 != null){
-                    l2 = l2.next;
-                }
-            }
-            if (carry > 0){
-                tail.next = new ListNode(carry);
-            }
-            return head;
-        }
-
-        /**
-         * TODO：方法二题解：链表
-         * 解题思路：
-         * 将两个链表看成是相同长度的进行遍历，如果一个链表较短则在前面补0，比如 987 + 023 = 1010
-         * 每一位计算的同时需要考虑上一位的进位问题，而当前位计算结束后同样需要更新进位值
-         * 如果两个链表全部遍历完毕后，进位值为 1，则在新链表最前方添加节点 1
-         * 小技巧：对于链表问题，返回结果为头结点时，通常需要先初始化一个预先指针 pre，该指针的下一个节点指向真正的头结点head。使用预先指针的目的在于链表初始化时无可用节点值，而且链表构造过程需要指针移动，进而会导致头指针丢失，无法返回结果。
-         */
-        public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
-            ListNode pre = new ListNode(0);
-            ListNode cur = pre;
-            int carry = 0;
-            while(l1 != null || l2 != null) {
-                int x = l1 == null ? 0 : l1.val;
-                int y = l2 == null ? 0 : l2.val;
-                int sum = x + y + carry;
-
-                carry = sum / 10;
-                sum = sum % 10;
-                cur.next = new ListNode(sum);
-
-                cur = cur.next;
-                if(l1 != null)
-                    l1 = l1.next;
-                if(l2 != null)
-                    l2 = l2.next;
-            }
-            if(carry == 1) {
-                cur.next = new ListNode(carry);
-            }
-            return pre.next;
-        }
-
-    }
-
-    /**
-     * 无重复字符的最长子串长度
-     * 题目：
-     * 给定一个字符串s，请你找出其中不含有重复字符的 最长子串 的长度
-     */
-    class day3{
-        /**
-         * 方法一：滑动窗口
-         * 其实就是一个队列,比如例题中的 abcabcbb，进入这个队列（窗口）为 abc 满足题目要求，当再进入 a，队列变成了 abca，这时候不满足要求。所以，我们要移动这个队列！
-         * 如何移动？
-         * 我们只要把队列的左边的元素移出就行了，直到满足题目要求！
-         * 一直维持这样的队列，找出队列出现最长的长度时候
-         *
-         * 复杂度分析：
-         * 时间复杂度：O(n)
-         */
-        public int lengthOfLongestSubstring(String s) {
-            if (s.length()==0) {
-                return 0;
-            }
-            HashMap<Character, Integer> map = new HashMap<>();
-            int max = 0;
-            int left = 0;
-            for(int i = 0; i < s.length(); i ++){
-                if(map.containsKey(s.charAt(i))){
-                    left = Math.max(left,map.get(s.charAt(i)) + 1);
-                }
-                map.put(s.charAt(i),i);
-                max = Math.max(max,i-left+1);
-            }
-            return max;
-        }
-    }
-
-    /**
      * 有效的括号
      * 题目：给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
      * 有效字符串需满足：
@@ -258,6 +123,72 @@ public class SimpleCode {
                 }
             }
             return deque.isEmpty();
+        }
+    }
+
+    /**
+     * 合并两个有序链表
+     * 题目：
+     * 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的
+     */
+    class day5{
+        public class ListNode {
+            int val;
+            ListNode next;
+            ListNode() {}
+            ListNode(int val) { this.val = val; }
+            ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+        }
+
+        /**
+         * 方法一：递归，将两个链表头部值较小的一个节点与剩下元素的 merge 操作结果合并
+         * 解题思路：
+         * 如果 l1 或者 l2 一开始就是空链表 ，那么没有任何操作需要合并，所以我们只需要返回非空链表。否则，我们要判断 l1 和 l2 哪一个链表的头节点的值更小，然后递归地决定下一个添加到结果里的节点。如果两个链表有一个为空，递归结束。
+         *
+         * 复杂度分析：
+         * 时间复杂度：O(n + m)，其中 n 和 m分别为两个链表的长度。因为每次调用递归都会去掉 l1 或者 l2 的头节点（直到至少有一个链表为空），函数 mergeTwoList 至多只会递归调用每个节点一次。因此，时间复杂度取决于合并后的链表长度，即 O(n+m)。
+         * 空间复杂度：O(n + m)，其中 n 和 m分别为两个链表的长度。递归调用 mergeTwoLists 函数时需要消耗栈空间，栈空间的大小取决于递归调用的深度。结束递归调用时 mergeTwoLists 函数最多调用 n+m 次，因此空间复杂度为 O(n+m)O。
+         */
+        public ListNode mergeTwoLists1(ListNode l1, ListNode l2) {
+            if (l1 == null) {
+                return l2;
+            } else if (l2 == null) {
+                return l1;
+            } else if (l1.val < l2.val) {
+                l1.next = mergeTwoLists1(l1.next, l2);
+                return l1;
+            } else {
+                l2.next = mergeTwoLists1(l1, l2.next);
+                return l2;
+            }
+        }
+
+        /**
+         * 方法二：迭代
+         * 解题思路：
+         * 当 l1 和 l2 都不是空链表时，判断 l1 和 l2 哪一个链表的头节点的值更小，将较小值的节点添加到结果里，当一个节点被添加到结果里之后，将对应链表中的节点向后移一位
+         *  首先，我们设定一个哨兵节点 prehead ，这可以在最后让我们比较容易地返回合并后的链表。我们维护一个 prev 指针，我们需要做的是调整它的 next 指针。然后，我们重复以下过程，直到 l1 或者 l2 指向了 null ：如果 l1 当前节点的值小于等于 l2 ，我们就把 l1 当前的节点接在 prev 节点的后面同时将 l1 指针往后移一位。否则，我们对 l2 做同样的操作。不管我们将哪一个元素接在了后面，我们都需要把 prev 向后移一位。
+         *  在循环终止的时候， l1 和 l2 至多有一个是非空的。由于输入的两个链表都是有序的，所以不管哪个链表是非空的，它包含的所有元素都比前面已经合并链表中的所有元素都要大。这意味着我们只需要简单地将非空链表接在合并链表的后面，并返回合并链表即可
+         *
+         * 复杂度分析：
+         * 时间复杂度：O(n + m)，其中 n 和 m 分别为两个链表的长度。因为每次循环迭代中，l1 和 l2 只有一个元素会被放进合并链表中， 因此 while 循环的次数不会超过两个链表的长度之和。所有其他操作的时间复杂度都是常数级别的，因此总的时间复杂度为 O(n+m)。
+         * 空间复杂度：O(1)。我们只需要常数的空间存放若干变量。
+         */
+        public ListNode mergeTwoLists2(ListNode list1, ListNode list2) {
+            ListNode result = new ListNode(-1);
+            ListNode resultTemp = result;
+            while(null != list1 && null != list2){
+                if(list1.val < list2.val){
+                    resultTemp.next = list1;
+                    list1 = list1.next;
+                }else{
+                    resultTemp.next = list2;
+                    list2 = list2.next;
+                }
+                resultTemp = resultTemp.next;
+            }
+            resultTemp.next = list1 == null ? list2:list1;
+            return result.next;
         }
     }
 }

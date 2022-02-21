@@ -1,4 +1,4 @@
-package com.psq.learn.hot;
+package com.psq.learn.offer;
 
 /**
  * @Description 困难程度
@@ -7,7 +7,7 @@ package com.psq.learn.hot;
  */
 public class DifficultCode {
     public static void main(String[] args) {
-        System.out.println("Hello hot-DifficultCode!");
+        System.out.println("Hello offer-DifficultCode!");
     }
 
 }
