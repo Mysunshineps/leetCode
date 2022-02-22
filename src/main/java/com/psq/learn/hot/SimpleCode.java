@@ -114,7 +114,7 @@ public class SimpleCode {
             for(int i=0; i<length; i++){
                 Character str = s.charAt(i);
                 if(map.containsKey(str)){
-                    if(deque.size() == 0 || deque.peek() != map.get(str)){
+                    if(deque.size() == 0 || deque.peek().equals(map.get(str))){
                         return false;
                     }
                     deque.pop();
