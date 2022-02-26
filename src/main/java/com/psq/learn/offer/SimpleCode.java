@@ -133,17 +133,78 @@ public class SimpleCode {
          * 原理： 以斐波那契数列性质 f(n + 1) = f(n) + f(n - 1) 为转移方程。
          * 从计算效率、空间复杂度上看，动态规划是本题的最佳解法。
          */
-        class Solution {
-            public int numWays(int n) {
-                int a = 1000000007;
-                int sum = 1, p=1, q=1;
-                for(int i=0; i<n; i++){
-                    sum = (q+p)%a;
-                    p=q;
-                    q=sum;
-                }
-                return p;
+        public int numWays(int n) {
+            int a = 1000000007;
+            int sum = 1, p=1, q=1;
+            for(int i=0; i<n; i++){
+                sum = (q+p)%a;
+                p=q;
+                q=sum;
             }
+            return p;
         }
+    }
+
+    /**
+     * 旋转数组的最小数字
+     * 题目：把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
+     * 给你一个可能存在 重复 元素值的数组 numbers ，它原来是一个升序排列的数组，并按上述情形进行了一次旋转。请返回旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一次旋转，该数组的最小值为1
+     */
+    class day11{
+        /**
+         * todo：个人答题的方法
+         * 方法一：动态规划，依次递减
+         * 解题思路：
+         * 依次取第一个pre和最后一个下标last的值，依次对比，若pre下标的值大于last下标的值，将last赋给pre,last减1继续对比，直到pre下标的值小于last下标的值,则pre下标的值为最小值
+         * 注意数组越界的问题，当last小于0时，则跳出
+         *
+         * 复杂度分析：
+         * 时间复杂度：平均时间复杂度为 O(n)，其中 n 是数组 numbers 的长度。如果数组是随机生成的。而最坏情况下，那么while 循环就需要执行 n 次，时间复杂度为 O(n)。
+         * 空间复杂度：O(1)。
+         */
+        public int minArray(int[] numbers) {
+            if(numbers.length == 1){
+                return numbers[0];
+            }
+            int length = numbers.length-1;
+            int pre = 0;
+            while(numbers[pre] >= numbers[length]){
+                pre = length;
+                length--;
+                if(length < 0){
+                    break;
+                }
+            }
+            return numbers[pre];
+        }
+
+        /**
+         * todo:官方解答
+         * 方法二：二分查找
+         *  解题思路：
+         *  最小值左边的值大于等于最后位置的数；最小值右边的值小于等于最后位置的数
+         *  因此：每次取最高下标high的值与数组中间下标pivot的值作对比，若下标pivot的值大于下标high的值，最小值在下标pivot的右方；反之小于则在左方；等于时将下标high左移一位再比较；直到找到最小值
+         *
+         *  复杂度分析：
+         * 时间复杂度：平均时间复杂度为O(logn)，其中 n 是数组numbers 的长度。如果数组是随机生成的，那么数组中包含相同元素的概率很低，在二分查找的过程中，大部分情况都会忽略一半的区间。而在最坏情况下，如果数组中的元素完全相同，那么while 循环就需要执行 n 次，每次忽略区间的右端点，时间复杂度为 O(n)。
+         * 空间复杂度：O(1)
+         */
+        public int minArray2(int[] numbers) {
+            int low = 0;
+            int high = numbers.length - 1;
+            while (low < high) {
+                //获取中间下标
+                int pivot = low + (high - low) / 2;
+                if (numbers[pivot] < numbers[high]) {
+                    high = pivot;
+                } else if (numbers[pivot] > numbers[high]) {
+                    low = pivot + 1;
+                } else {
+                    high --;
+                }
+            }
+            return numbers[low];
+        }
+
     }
 }
