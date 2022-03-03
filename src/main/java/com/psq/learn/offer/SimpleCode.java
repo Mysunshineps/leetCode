@@ -11,6 +11,7 @@ import java.util.LinkedList;
 public class SimpleCode {
 
     public static void main(String[] args) {
+//        System.out.println(result);
         System.out.println("Hello offer-SimpleCode!");
     }
 
@@ -207,4 +208,30 @@ public class SimpleCode {
         }
 
     }
+
+    /**
+     *  二进制中1的个数
+     *  题目：编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为 汉明重量).
+     */
+    class day16{
+        /**
+         * 方法：位运算优化[与（&）、非（~）、或（|）、异或（^）]
+         * 解题思路：观察这个运算：n&(n - 1)，其预算结果恰为把 n 的二进制位中的最低位的 1 变为 0 之后的结果。
+         * 如：6 = 二进制(110), 4 = 二进制(100)；6&(6-1) = 4,
+         * 这样我们可以利用这个位运算的性质加速我们的检查过程，在实际代码中，我们不断让当前的 n 与n−1 做与运算，直到 n 变为 0 即可。因为每次运算会使得 n 的最低位的 1 被翻转，因此运算次数就等于 n 的二进制位中 1 的个数。
+         *
+         * 复杂度分析：
+         * 时间复杂度：O(logn)。循环次数等于 n 的二进制位中 1 的个数，最坏情况下 n 的二进制位全部为 1。我们需要循环 logn 次。
+         * 空间复杂度：O(1)，我们只需要常数的空间保存若干变量。
+         */
+        public int hammingWeight(int n) {
+            int result = 0;
+            while(n != 0){
+                n = n & (n-1);
+                result++;
+            }
+            return result;
+        }
+    }
+
 }
