@@ -386,4 +386,31 @@ public class MediumCode {
         }
     }
 
+    /**
+     * 数值的整数次方
+     * 题目：实现 pow(x, n) ，即计算 x 的 n 次幂函数（即，xn）。不得使用库函数，同时不需要考虑大数问题
+     */
+    class day17{
+        /**
+         * 解题思路：
+         * 求 x^n;最简单的方法是通过循环将 n 个 x 乘起来，依次求 x^1, x^2, ..., x^{n-1}, x^n，时间复杂度为 O(n) 。
+         * 快速幂法 可将时间复杂度降低至 O(log_2 n)，以下从 “二分法” 和 “二进制” 两个角度解析快速幂法
+         * 具体查看：https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/solution/mian-shi-ti-16-shu-zhi-de-zheng-shu-ci-fang-kuai-s/
+         */
+        public double myPow(double x, int n) {
+            if(x == 0) return 0;
+            long b = n;
+            double res = 1.0;
+            if(b < 0) {
+                x = 1 / x;
+                b = -b;
+            }
+            while(b > 0) {
+                if((b & 1) == 1) res *= x;
+                x *= x;
+                b >>= 1;
+            }
+            return res;
+        }
+    }
 }
