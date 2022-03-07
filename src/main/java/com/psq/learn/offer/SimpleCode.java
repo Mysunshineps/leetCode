@@ -296,4 +296,45 @@ public class SimpleCode {
             return result;
         }
     }
+
+    /**
+     *  删除链表的节点
+     *  题目：给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。返回删除后的链表的头节点
+     */
+    class day20{
+        public class ListNode {
+            int val;
+            ListNode next;
+            ListNode(int x) { val = x; }
+        }
+
+        /**
+         * 解题思路：
+         * 特例处理： 当应删除头节点 head 时，直接返回 head.next 即可。
+         * 初始化： pre = head , cur = head.next 。
+         * 定位节点： 当 cur 为空 或 cur 节点值等于 val 时跳出。
+         * 保存当前节点索引，即 pre = cur 。
+         * 遍历下一节点，即 cur = cur.next 。
+         * 删除节点： 若 cur 指向某节点，则执行 pre.next = cur.next ；若 cur 指向 nullnull ，代表链表中不包含值为 val 的节点。
+         * 返回值： 返回链表头部节点 head 即可
+         *
+         * 复杂度分析：
+         * 时间复杂度 O(N)： N 为链表长度，删除操作平均需循环 N/2 次，最差 N 次。
+         * 空间复杂度 O(1)： cur, pre 占用常数大小额外空间。
+         */
+        public ListNode deleteNode(ListNode head, int val) {
+            if(head.val == val) {
+                return head.next;
+            }
+            ListNode pre = head, cur = head.next;
+            while(cur != null && cur.val != val) {
+                pre = cur;
+                cur = cur.next;
+            }
+            if(cur != null) {
+                pre.next = cur.next;
+            }
+            return head;
+        }
+    }
 }
