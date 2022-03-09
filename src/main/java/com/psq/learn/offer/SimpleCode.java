@@ -1,9 +1,6 @@
 package com.psq.learn.offer;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description 简单程度
@@ -371,6 +368,78 @@ public class SimpleCode {
                 nums[j] = tmp;
             }
             return nums;
+        }
+    }
+
+    /**
+     * 链表中倒数第k个节点
+     * 题目：
+     * 输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。
+     * 例如，一个链表有 6 个节点，从头节点开始，它们的值依次是 1、2、3、4、5、6。这个链表的倒数第 3 个节点是值为 4 的节点
+     * 示例：
+     * 给定一个链表: 1->2->3->4->5, 和 k = 2.
+     * 返回链表 4->5
+     */
+    class day22{
+        public class ListNode {
+            int val;
+            ListNode next;
+            ListNode(int x) { val = x; }
+        }
+
+        /**
+         * 方法一：顺序查找
+         * 思路与算法:
+         * 最简单直接的方法即为顺序查找，假设当前链表的长度为 n，则我们知道链表的倒数第 k 个节点即为正数第 n - k个节点，此时我们只需要顺序遍历到链表的第 n - k个节点即为倒数第 k 个节点。
+         * 我们首先求出链表的长度 n，然后顺序遍历到链表的第 n - k 个节点返回即可
+         *
+         * 复杂度分析
+         * 时间复杂度：O(n)，其中 n 为链表的长度。需要两次遍历。
+         * 空间复杂度：O(1)。
+         */
+        public ListNode getKthFromEnd1(ListNode head, int k) {
+            HashMap<Integer, Integer> result = new HashMap<>();
+            Integer num = 0;
+            ListNode temp = head;
+            while(null != temp){
+                num++;
+                result.put(num, temp.val);
+                temp = temp.next;
+            }
+            num = num - k;
+            k = 0;
+            while(k != num){
+                head = head.next;
+                k++;
+            }
+            return head;
+        }
+
+        /**
+         * 方法二：双指针
+         * 思路与算法
+         * 快慢指针的思想。我们将第一个指针 fast 指向链表的第 k + 1 个节点，第二个指针 slow 指向链表的第一个节点，此时指针 fast 与 slow 二者之间刚好间隔 k 个节点。此时两个指针同步向后走，当第一个指针 fast 走到链表的尾部空节点时，则此时 slow 指针刚好指向链表的倒数第k个节点。
+         * 先将 fast 指向链表的头节点，然后向后走 k 步，则此时 fast 指针刚好指向链表的第 k+1 个节点。
+         * 再将slow 指向链表的头节点，同时 slow 与 fast 同步向后走，当 fast 指针指向链表的尾部空节点时，则此时返回slow 所指向的节点即可。
+         *
+         * 复杂度分析
+         * 时间复杂度：O(n)，其中 n 为链表的长度。我们使用快慢指针，只需要一次遍历即可，复杂度为 O(n)。
+         * 空间复杂度：O(1)。
+         */
+        public ListNode getKthFromEnd2(ListNode head, int k) {
+            ListNode fast = head;
+            ListNode slow = head;
+
+            while (fast != null && k > 0) {
+                fast = fast.next;
+                k--;
+            }
+            while (fast != null) {
+                fast = fast.next;
+                slow = slow.next;
+            }
+
+            return slow;
         }
     }
 }
