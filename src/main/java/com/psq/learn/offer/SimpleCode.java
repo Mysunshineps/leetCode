@@ -442,4 +442,36 @@ public class SimpleCode {
             return slow;
         }
     }
+
+    /**
+     * 反转链表
+     * 题目：定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+     * 示例:
+     * 输入: 1->2->3->4->5->NULL
+     * 输出: 5->4->3->2->1->NULL
+     */
+    class day23{
+        public class ListNode {
+            int val;
+            ListNode next;
+            ListNode(int x) { val = x; }
+        }
+
+        /**
+         * 方法一：迭代(双指针)
+         * 假设链表为 1→2→3→∅，我们想要把它改成 3→2→1→∅。
+         * 在遍历链表时，将当前节点的next 指针改为指向前一个节点。由于节点没有引用其前一个节点，因此必须事先存储其前一个节点。在更改引用之前，还需要存储后一个节点。最后返回新的头引用
+         */
+        public ListNode reverseList(ListNode head) {
+            ListNode prev = null;
+            ListNode curr = head;
+            while (curr != null) {
+                ListNode next = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = next;
+            }
+            return prev;
+        }
+    }
 }
