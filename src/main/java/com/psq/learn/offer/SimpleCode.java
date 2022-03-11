@@ -474,4 +474,49 @@ public class SimpleCode {
             return prev;
         }
     }
+
+    /**
+     * 合并两个排序的链表
+     * 题目：输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的
+     */
+    class day24{
+        public class ListNode {
+            int val;
+            ListNode next;
+            ListNode(int x) { val = x; }
+        }
+
+        /**
+         *  解题思路：
+         * 1.初始化：伪头节点 dum ，节点 cur 指向 dum
+         * 2.循环合并：当l1或l2为空时跳出
+         *  当l1.val<l2.val 时： cur 的后继节点指定为 l1，并 l1向前走一步
+         *  当l1.val≥l2.val 时： cur 的后继节点指定为 l2，并l2向前走一步
+         *  然后节点 cur 向前走一步，即cur=cur.next
+         * 3.合并剩余尾部： 跳出时有两种情况，即 l1为空 或 l2为空
+         *  若l1=null ： 将 l1添加至节点 cur之后；
+         *  若l2=null ： 将 l2添加至节点 cur之后；
+         * 4.返回值： 合并链表在伪头节点 dum 之后，因此返回 dum.next 即可
+         *
+         *复杂度分析：
+         * 时间复杂度 O(M+N)：M,N 分别为链表 l1 , l2的长度，合并操作需遍历两链表。
+         * 空间复杂度 O(1) ： 节点引用 dum , cur 使用常数大小的额外空间
+         */
+        public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+            ListNode cur = new ListNode(-1);
+            ListNode temp = cur;
+            while(l1 != null && l2 != null){
+                if(l1.val <= l2.val){
+                    temp.next = new ListNode(l1.val);
+                    l1 = l1.next;
+                }else{
+                    temp.next = new ListNode(l2.val);
+                    l2 = l2.next;
+                }
+                temp = temp.next;
+            }
+            temp.next = l1 == null ?l2:l1;
+            return cur.next;
+        }
+    }
 }
