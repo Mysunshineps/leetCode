@@ -519,4 +519,40 @@ public class SimpleCode {
             return cur.next;
         }
     }
+
+    /**
+     * 找出数组中的所有 K 近邻下标
+     * 题目：给你一个下标从 0 开始的整数数组 nums 和两个整数 key 和 k 。K 近邻下标 是 nums 中的一个下标 i ，并满足至少存在一个下标 j 使得 |i - j| <= k 且 nums[j] == key 。
+     * 以列表形式返回按 递增顺序 排序的所有 K 近邻下标
+     */
+    class day26{
+        /**
+         * 方法一：自己写的，思维推导，有待优化
+         * 复杂度分析：
+         * 时间复杂度：虽然 for 循环里还有 while 循环，但是每个位置最多被访问两次（快慢指针各访问一次），所以整体的时间复杂度为 O(N)
+         * 空间复杂度：O(1)
+         */
+        public List<Integer> findKDistantIndices(int[] nums, int key, int k) {
+            List<Integer> result = new ArrayList<>();
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] == key) {
+                    find(i,k,nums.length,result);
+                }
+            }
+            return result;
+        }
+
+        private void find(int i, int k, int length, List<Integer> result) {
+            int start = i-k < 0?0:i-k;
+            int end = i+k >= length? length-1:i+k;
+            if(result.size() >0){
+                start = result.get(result.size()-1);
+            }
+            for(; start<=end; start++){
+                if(Math.abs(i - start) <= k && !result.contains(new Integer(start))){
+                    result.add(start);
+                }
+            }
+        }
+    }
 }
