@@ -680,5 +680,70 @@ public class SimpleCode {
             }
             return result;
         }
+
+        public int[] spiralOrder2(int[][] matrix) {
+            if(matrix.length == 0) return new int[0];
+            int l = 0, r = matrix[0].length - 1, t = 0, b = matrix.length - 1, x = 0;
+            int[] res = new int[(r + 1) * (b + 1)];
+            while(true) {
+                for(int i = l; i <= r; i++) res[x++] = matrix[t][i]; // left to right.
+                if(++t > b) break;
+                for(int i = t; i <= b; i++) res[x++] = matrix[i][r]; // top to bottom.
+                if(l > --r) break;
+                for(int i = r; i >= l; i--) res[x++] = matrix[b][i]; // right to left.
+                if(t > --b) break;
+                for(int i = b; i >= t; i--) res[x++] = matrix[i][l]; // bottom to top.
+                if(++l > r) break;
+            }
+            return res;
+        }
+    }
+
+    /**
+     * 包含min函数的栈
+     * 题目：定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)
+     */
+    class day30{
+        /**
+         * 方法一：双栈，辅助栈(优解)
+         * 将 min() 函数复杂度降为 O(1) ，可通过建立辅助栈实现；
+         * 数据栈 A ： 栈 A 用于存储所有元素，保证入栈 push() 函数、出栈 pop() 函数、获取栈顶 top() 函数的正常逻辑。
+         * 辅助栈 B ： 栈 B 中存储栈 A 中所有 非严格降序 的元素，则栈 A 中的最小元素始终对应栈 B 的栈顶元素，即 min() 函数只需返回栈 B 的栈顶元素即可
+         *
+         *复杂度分析：
+         * 时间复杂度 O(1) ： push(), pop(), top(), min() 四个函数的时间复杂度均为常数级别。
+         * 空间复杂度 O(N) ： 当共有 N个待入栈元素时，辅助栈 B 最差情况下存储 N 个元素，使用 O(N) 额外空间
+         *
+         * 方法二：栈+集合，每次添加元素，加入list中，并排序，使其有序，每次pop()，删除list.remove(元素)
+         * 能解答这道题，空间复杂度和方法一差不多，但时间效率低
+         */
+        class MinStack {
+            Stack<Integer> initial, temp = null;
+            public MinStack() {
+                initial = new Stack<>();
+                temp = new Stack<>();
+            }
+
+            public void push(int x) {
+                initial.push(x);
+                if(temp.empty() || temp.peek() >= x){
+                    temp.push(x);
+                }
+            }
+
+            public void pop() {
+                if(initial.pop().equals(temp.peek())){
+                    temp.pop();
+                }
+            }
+
+            public int top() {
+                return initial.peek();
+            }
+
+            public int min() {
+                return temp.peek();
+            }
+        }
     }
 }
