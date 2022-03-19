@@ -746,4 +746,49 @@ public class SimpleCode {
             }
         }
     }
+
+    /**
+     * 从上到下打印二叉树 II
+     * 题目：从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行
+     */
+    class day31 {
+        /**
+         * 解题思路：
+         * 使用队列，先进先出
+         *
+         * 复杂度分析：
+         * 时间复杂度 O(N)： N 为二叉树的节点数量，即 BFS 需循环 N 次。
+         * 空间复杂度 O(N)： 最差情况下，即当树为平衡二叉树时，最多有 N/2 个树节点同时在 queue 中，使用 O(N) 大小的额外空间。
+         *
+         */
+        public class TreeNode {
+            int val;
+            TreeNode left;
+            TreeNode right;
+            TreeNode(int x) { val = x; }
+        }
+
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            Queue<TreeNode> queue = new LinkedList<>();
+            List<List<Integer>> result = new ArrayList<>();
+            if (null != root) {
+                queue.add(root);
+            }
+            while (!queue.isEmpty()) {
+                List<Integer> temp = new ArrayList<>();
+                for (int i = queue.size(); i > 0; i--) {
+                    TreeNode node = queue.poll();
+                    temp.add(node.val);
+                    if (null != node.left) {
+                        queue.add(node.left);
+                    }
+                    if (null != node.right) {
+                        queue.add(node.right);
+                    }
+                }
+                result.add(temp);
+            }
+            return result;
+        }
+    }
 }
