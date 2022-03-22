@@ -1,9 +1,6 @@
 package com.psq.learn.offer;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @Description 中等程度
@@ -537,6 +534,57 @@ public class MediumCode {
                 p++;
             }
             return end == p && res(postorder, start, temp-1) && res(postorder, temp, end-1);
+        }
+    }
+
+    /**
+     * 二叉树中和为某一值的路径
+     * 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+     * 叶子节点 是指没有子节点的节点
+     */
+    class day34{
+        public class TreeNode {
+            int val;
+            TreeNode left;
+            TreeNode right;
+            TreeNode() {}
+            TreeNode(int val) { this.val = val; }
+            TreeNode(int val, TreeNode left, TreeNode right) {
+                this.val = val;
+                this.left = left;
+                this.right = right;
+            }
+        }
+
+        /**
+         *方法一：深度优先搜索
+         * 思路及算法
+         * 我们可以采用深度优先搜索的方式，枚举每一条从根节点到叶子节点的路径。当我们遍历到叶子节点，且此时路径和恰为目标和时，我们就找到了一条满足条件的路径
+         *
+         *复杂度分析
+         * 时间复杂度：O(N^2)，其中 N是树的节点数。在最坏情况下，树的上半部分为链状，下半部分为完全二叉树，并且从根节点到每一个叶子节点的路径都符合题目要求。此时，路径的数目为 O(N)，并且每一条路径的节点个数也为 O(N)，因此要将这些路径全部添加进答案中，时间复杂度为 O(N^2)
+         * 空间复杂度：O(N)，其中 N是树的节点数。空间复杂度主要取决于栈空间的开销，栈中的元素个数不会超过树的节点数
+         */
+        List<List<Integer>> result = new ArrayList<>();
+        Deque<Integer> temp = new LinkedList<>();
+        public List<List<Integer>> pathSum(TreeNode root, int target) {
+            findNode(root, target);
+            return result;
+        }
+
+        private void findNode(TreeNode root, int target){
+            if(null == root){
+                return;
+            }
+            temp.offerLast(root.val);
+            target -= root.val;
+            if(root.left == null && root.right == null && target == 0){
+                result.add(new LinkedList<>(temp));
+            }
+            findNode(root.left, target);
+            findNode(root.right, target);
+            temp.pollLast();
+            return;
         }
     }
 }
