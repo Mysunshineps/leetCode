@@ -587,4 +587,49 @@ public class MediumCode {
             return;
         }
     }
+
+    /**
+     * 复杂链表的复制
+     * 请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null
+     * 注意：别引用了原始节点
+     */
+    class day35{
+        class Node {
+            int val;
+            Node next;
+            Node random;
+
+            public Node(int val) {
+                this.val = val;
+                this.next = null;
+                this.random = null;
+            }
+        }
+
+        /**
+         * 方法一：回溯 + 哈希表
+         * 思路及算法
+         * 本题要求我们对一个特殊的链表进行深拷贝。如果是普通链表，我们可以直接按照遍历的顺序创建链表节点。而本题中因为随机指针的存在，当我们拷贝节点时，「当前节点的随机指针指向的节点」可能还没创建，因此我们需要变换思路。一个可行方案是，我们利用回溯的方式，让每个节点的拷贝操作相互独立。对于当前节点，我们首先要进行拷贝，然后我们进行「当前节点的后继节点」和「当前节点的随机指针指向的节点」拷贝，拷贝完成后将创建的新节点的指针返回，即可完成当前节点的两指针的赋值。
+         * 具体地，我们用哈希表记录每一个节点对应新节点的创建情况。遍历该链表的过程中，我们检查「当前节点的后继节点」和「当前节点的随机指针指向的节点」的创建情况。如果这两个节点中的任何一个节点的新节点没有被创建，我们都立刻递归地进行创建。当我们拷贝完成，回溯到当前层时，我们即可完成当前节点的指针赋值。注意一个节点可能被多个其他节点指向，因此我们可能递归地多次尝试拷贝某个节点，为了防止重复拷贝，我们需要首先检查当前节点是否被拷贝过，如果已经拷贝过，我们可以直接从哈希表中取出拷贝后的节点的指针并返回即可。
+         * 注意在实际代码中，我们需要特别判断给定节点为空节点的情况
+         *
+         * 复杂度分析
+         * 时间复杂度：O(n)，其中 n 是链表的长度。对于每个节点，我们至多访问其「后继节点」和「随机指针指向的节点」各一次，均摊每个点至多被访问两次。
+         * 空间复杂度：O(n)，其中 n 是链表的长度。为哈希表的空间开销
+         */
+        HashMap<Node,Node> map = new HashMap<>();
+        public Node copyRandomList(Node head) {
+            if(null == head){
+                return null;
+            }
+            if(!map.containsKey(head)){
+                Node node = new Node(head.val);
+                map.put(head, node);
+                node.next = copyRandomList(head.next);
+                node.random = copyRandomList(head.random);
+            }
+            return map.get(head);
+        }
+
+    }
 }
