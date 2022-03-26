@@ -50,7 +50,7 @@ public class MyArrayList implements Serializable {
      */
     public boolean add(Object e){
         //确认添加数据后的容量
-        ensureCapacity(elementData.length + 1);
+        ensureCapacity(size + 1);
         //使用下标赋值
         elementData[size++] = e;
         return true;
@@ -93,8 +93,8 @@ public class MyArrayList implements Serializable {
      */
     public Object remove(int index){
         rangeCheck(index);
-        //计算要删除的位置后有几个元素
         Object oldValue = elementData[index];
+        //计算要删除的位置后有几个元素
         int numMoved = size - index - 1;
         if(numMoved > 0){
             /**
