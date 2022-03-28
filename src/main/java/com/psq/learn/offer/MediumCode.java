@@ -630,6 +630,49 @@ public class MediumCode {
             }
             return map.get(head);
         }
+    }
 
+    /**
+     * 美化数组的最少删除数
+     * 题目：
+     * 给你一个下标从 0 开始的整数数组 nums ，如果满足下述条件，则认为数组 nums 是一个 美丽数组 ：
+     * a)nums.length 为偶数
+     * b)对所有满足 i % 2 == 0 的下标 i ，nums[i] != nums[i + 1] 均成立
+     * 注意，空数组同样认为是美丽数组。
+     * 你可以从 nums 中删除任意数量的元素。当你删除一个元素时，被删除元素右侧的所有元素将会向左移动一个单位以填补空缺，而左侧的元素将会保持 不变 。
+     * 返回使 nums 变为美丽数组所需删除的 最少 元素数目。
+     */
+    class day40{
+        class Solution {
+            /**
+             * 解题思路：
+             * 由于删除一个元素后，删除元素的右侧的所有元素将向左移动。
+             * 栈可以实现，而其他数据结构实现这个的时间复杂度太高，不推荐使用
+             */
+            public int minDeletion(int[] nums) {
+                int n = nums.length;
+                if (n == 0) return 0;
+                Deque<Integer> deque = new LinkedList<>();
+                deque.push(nums[0]);
+                for (int i = 1; i < n; i++) {
+            /*
+                对所有满足 i % 2 == 0 的下标 i ，nums[i] != nums[i + 1] 均成立
+             */
+                    //当栈的大小为偶数时，说明此时可以将数据直接添加到栈中
+                    if (deque.size() % 2 != 0){
+                        int val = deque.peek();
+                        //当为奇数时，要判断是否与栈顶的元素相同，如果相同，则不能添加
+                        if (nums[i] == val) {
+                            continue;
+                        }
+                    }
+                    deque.push(nums[i]);
+
+                }
+                if (deque.size() % 2 == 0) return n - deque.size();
+                //当栈的大小为奇数时，需要减去栈顶元素，所以删除的次数要加1
+                return n - deque.size() + 1;
+            }
+        }
     }
 }
