@@ -1,4 +1,4 @@
-package com.psq.learn.learn.Thread;
+package com.psq.learn.learn.thread;
 
 /**
  * 多线程实现方法一：继承Thread，然后直接调用start方法

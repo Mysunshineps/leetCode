@@ -1,4 +1,4 @@
-package com.psq.learn.learn.Thread;
+package com.psq.learn.learn.thread;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
