@@ -892,4 +892,29 @@ public class SimpleCode {
             return i;
         }
     }
+
+    /**
+     * 二叉树的深度
+     * 题目：输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度
+     */
+    class day44{
+        public class TreeNode {
+            int val;
+            TreeNode left;
+            TreeNode right;
+            TreeNode(int x) { val = x; }
+        }
+
+        /**
+         * 求树的深度需要遍历树的所有节点，基于 后序遍历（DFS）和层序遍历（BFS）的两种解法
+         */
+        public int maxDepth(TreeNode root) {
+            if(null == root){
+                return 0;
+            }
+            int result = 1;
+            result+= Math.max(maxDepth(root.left),maxDepth(root.right));
+            return result;
+        }
+    }
 }
