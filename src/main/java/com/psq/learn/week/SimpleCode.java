@@ -45,7 +45,7 @@ public class SimpleCode {
         }
     }
 
-    class doubleWeek_74{
+    class doubleWeek_74 {
         /**
          * 将数组划分成相等数对
          * 题目：
@@ -56,40 +56,54 @@ public class SimpleCode {
          * 如果可以将 nums 划分成 n 个数对，请你返回 true ，否则返回 false
          */
         public boolean divideArray(int[] nums) {
-            if(null == nums || nums.length%2 == 1){
+            if (null == nums || nums.length % 2 == 1) {
                 return false;
             }
 
             Map<Integer, Integer> map = new HashMap<>();
-            for(int i=0; i<nums.length; i++){
-                if(map.containsKey(nums[i])){
+            for (int i = 0; i < nums.length; i++) {
+                if (map.containsKey(nums[i])) {
                     map.put(nums[i], map.get(nums[i]) + 1);
-                }else{
+                } else {
                     map.put(nums[i], 1);
                 }
             }
 
-            for(Integer num:map.values()){
-                if(num % 2 == 1){
+            for (Integer num : map.values()) {
+                if (num % 2 == 1) {
                     return false;
                 }
             }
             return true;
         }
+    }
 
+    class week292{
         /**
-         *  字符串中最多数目的子字符串
-         *  题目：
-         *  给你一个下标从 0 开始的字符串 text 和另一个下标从 0 开始且长度为 2 的字符串 pattern ，两者都只包含小写英文字母。
-         * 你可以在 text 中任意位置插入 一个 字符，这个插入的字符必须是 pattern[0] 或者 pattern[1] 。注意，这个字符可以插入在 text 开头或者结尾的位置。
-         * 请你返回插入一个字符后，text 中最多包含多少个等于 pattern 的 子序列 。
-         * 子序列 指的是将一个字符串删除若干个字符后（也可以不删除），剩余字符保持原本顺序得到的字符串。
+         * 题目：2264. 字符串中最大的 3 位相同数字
+         *
+         * 给你一个字符串 num ，表示一个大整数。如果一个整数满足下述所有条件，则认为该整数是一个 优质整数 ：
+         * 该整数是 num 的一个长度为 3 的 子字符串 。
+         * 该整数由唯一一个数字重复 3 次组成。
+         * 以字符串形式返回 最大的优质整数 。如果不存在满足要求的整数，则返回一个空字符串 "" 。
+         *
+         * 注意：
+         * 子字符串 是字符串中的一个连续字符序列。
+         * num 或优质整数中可能存在 前导零
          */
-//        public long maximumSubsequenceCount(String text, String pattern) {
-//
-//
-//
-//        }
+        public String largestGoodInteger(String num) {
+            int max = -1;
+            char[] chars = num.toCharArray();
+            for (int i=0; i<chars.length-2; i++){
+                if ((chars[i]-'0') == (chars[i+1]-'0') && (chars[i+1]-'0') == (chars[i+2]-'0')){
+                    max = Math.max(max, (chars[i]-'0'));
+                }
+            }
+            if (max < 0){
+                return "";
+            }
+            return ""+max+max+max;
+        }
     }
 
 }
